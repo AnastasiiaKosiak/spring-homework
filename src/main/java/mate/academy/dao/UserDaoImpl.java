@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
             TypedQuery<User> query = session.createQuery("from User", User.class);
             return query.getResultList();
         } catch (Exception exception) {
-            throw new DataProcessingException("Error getting a list of all movies", exception);
+            throw new DataProcessingException("Error getting a list of all users", exception);
         }
     }
 }
