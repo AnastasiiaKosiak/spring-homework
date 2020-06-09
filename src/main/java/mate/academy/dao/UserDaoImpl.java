@@ -2,6 +2,9 @@ package mate.academy.dao;
 
 import java.util.List;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import mate.academy.exceptions.DataProcessingException;
 import mate.academy.model.User;
 import org.hibernate.Session;
@@ -47,6 +50,19 @@ public class UserDaoImpl implements UserDao {
             return query.getResultList();
         } catch (Exception exception) {
             throw new DataProcessingException("Error getting a list of all users", exception);
+        }
+    }
+
+    @Override
+    public User get(Long userId) {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+            query.select(root).where(criteriaBuilder.equal(root.get("id"), userId));
+            return session.createQuery(query).uniqueResult();
+        } catch (Exception exception) {
+            throw new DataProcessingException("Error getting a user with such id", exception);
         }
     }
 }
