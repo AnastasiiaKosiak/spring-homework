@@ -31,7 +31,7 @@ public class UserController {
         return new UserResponseDto(user.getName(), user.getEmail(), user.getPassword());
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<UserResponseDto> getAll() {
         return userService.listUsers()
                 .stream()
